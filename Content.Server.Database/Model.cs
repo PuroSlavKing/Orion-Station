@@ -9,6 +9,8 @@ using System.Net;
 using System.Text.Json;
 using Content.Shared.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Content.Server.Database
 {

@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Robust.Shared.Configuration;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization.Manager;
-using Robust.Shared.Utility;
 
 namespace Content.Server.Database
 {
@@ -39,7 +38,7 @@ namespace Content.Server.Database
             bool synchronous,
             ISawmill opsLog,
             ISerializationManager serialization)
-            : base(opsLog, serialization)
+            : base(opsLog, serialization, new SqliteDbProvider())
         {
             _options = options;
 
@@ -72,7 +71,7 @@ namespace Content.Server.Database
         {
             await using var db = await GetDbImpl();
 
-            var ban = await db.SqliteDbContext.Ban
+            var ban = await db.TypedContext.Ban
                 .ApplyIncludes(GetBanDefIncludes())
                 .Where(p => p.Id == id)
                 .AsSplitQuery()
@@ -107,7 +106,7 @@ namespace Content.Server.Database
         }
 
         private async Task<IEnumerable<BanDef>> GetBanQueryAsync(
-            DbGuardImpl db,
+            DbGuard<SqliteServerDbContext> db,
             IPAddress? address,
             NetUserId? userId,
             ImmutableArray<byte>? hwId,
@@ -121,7 +120,7 @@ namespace Content.Server.Database
 
             // SQLite can't do the net masking stuff we need to match IP address ranges.
             // So just pull down the whole list into memory.
-            var queryBans = await GetAllBans(db.SqliteDbContext, includeUnbanned, exempt, type);
+            var queryBans = await GetAllBans(db.TypedContext, includeUnbanned, exempt, type);
 
             var playerInfo = new BanMatcher.PlayerInfo
             {
@@ -189,9 +188,9 @@ namespace Content.Server.Database
                         })
                         .ToList(),
             };
-            db.SqliteDbContext.Ban.Add(banEntity);
+            db.TypedContext.Ban.Add(banEntity);
 
-            await db.SqliteDbContext.SaveChangesAsync();
+            await db.TypedContext.SaveChangesAsync();
             return ConvertBan(banEntity);
         }
 
@@ -199,7 +198,7 @@ namespace Content.Server.Database
         {
             await using var db = await GetDbImpl();
 
-            db.SqliteDbContext.Unban.Add(new Unban
+            db.TypedContext.Unban.Add(new Unban
             {
                 BanId = unban.BanId,
                 UnbanningAdmin = unban.UnbanningAdmin?.UserId,

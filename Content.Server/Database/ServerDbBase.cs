@@ -1716,7 +1716,7 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
     {
         protected readonly IDbProvider Provider;
 
-        protected ServerDbBase(ISawmill opsLog, IDbProvider provider) : base(opsLog)
+        protected ServerDbBase(ISawmill opsLog, ISerializationManager serialization, IDbProvider provider) : base(opsLog, serialization)
         {
             Provider = provider;
         }

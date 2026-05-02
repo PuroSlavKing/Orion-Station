@@ -33,7 +33,7 @@ namespace Content.Server.Database
             ISawmill opsLog,
             ISawmill notifyLog,
             ISerializationManager serialization)
-            : base(opsLog, serialization)
+            : base(opsLog, serialization, new PostgresDbProvider())
         {
             var concurrency = cfg.GetCVar(CCVars.DatabasePgConcurrency);
 
@@ -64,7 +64,7 @@ namespace Content.Server.Database
         {
             await using var db = await GetDbImpl();
 
-            var query = db.PgDbContext.Ban
+            var query = db.TypedContext.Ban
                 .ApplyIncludes(GetBanDefIncludes())
                 .Where(p => p.Id == id)
                 .AsSplitQuery();
@@ -113,7 +113,7 @@ namespace Content.Server.Database
             await using var db = await GetDbImpl();
 
             var exempt = type == BanType.Role ? null : await GetBanExemptionCore(db, userId);
-            var newPlayer = !await db.PgDbContext.Player.AnyAsync(p => p.UserId == userId);
+            var newPlayer = !await db.TypedContext.Player.AnyAsync(p => p.UserId == userId);
             var query = MakeBanLookupQuery(address, userId, hwId, modernHWIds, db, includeUnbanned, exempt, newPlayer, type);
             var queryBans = await query.ToArrayAsync();
             var bans = new List<BanDef>(queryBans.Length);
@@ -170,7 +170,7 @@ namespace Content.Server.Database
             if (address != null && !exemptFlags.GetValueOrDefault(ServerBanExemptFlags.None)
                     .HasFlag(ServerBanExemptFlags.IP))
             {
-                selectorQueries.Add(db.PgDbContext.BanAddress
+                selectorQueries.Add(db.TypedContext.BanAddress
                     .Where(ba => EF.Functions.ContainsOrEqual(ba.Address, address)
                                  && !(ba.Ban!.ExemptFlags.HasFlag(ServerBanExemptFlags.BlacklistedRange) &&
                                       !newPlayer)));
@@ -292,9 +292,9 @@ namespace Content.Server.Database
                         })
                         .ToList(),
             };
-            db.PgDbContext.Ban.Add(banEntity);
+            db.TypedContext.Ban.Add(banEntity);
 
-            await db.PgDbContext.SaveChangesAsync();
+            await db.TypedContext.SaveChangesAsync();
             return ConvertBan(banEntity);
         }
 
@@ -302,7 +302,7 @@ namespace Content.Server.Database
         {
             await using var db = await GetDbImpl();
 
-            db.PgDbContext.Unban.Add(new Unban
+            db.TypedContext.Unban.Add(new Unban
             {
                 BanId = unban.BanId,
                 UnbanningAdmin = unban.UnbanningAdmin?.UserId,
