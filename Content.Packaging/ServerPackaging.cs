@@ -92,7 +92,8 @@ public static class ServerPackaging
         }
     }
 
-    private static async Task BuildPlatform(PlatformReg platform,
+    private static async Task BuildPlatform(
+        PlatformReg platform,
         bool skipBuild,
         bool hybridAcz,
         bool logBuild,
@@ -103,30 +104,36 @@ public static class ServerPackaging
 
         if (!skipBuild)
         {
-            var startInfo = new ProcessStartInfo
+            var serverModules = FindServerModules();
+
+            foreach (var module in serverModules)
             {
                 var projectName = Path.GetFileName(module);
-                await ProcessHelpers.RunCheck(new ProcessStartInfo
+                var startInfo = new ProcessStartInfo
                 {
-                    "build",
-                    Path.Combine("Content.Server", "Content.Server.csproj"),
-                    "-c", configuration,
-                    "--nologo",
-                    "/v:m",
-                    $"/p:TargetOs={platform.TargetOs}",
-                    "/t:Rebuild",
-                    "/p:FullRelease=true",
-                    "/m"
+                    FileName = "dotnet",
+                    ArgumentList =
+                    {
+                        "build",
+                        Path.Combine(module, $"{projectName}.csproj"),
+                        "-c", configuration,
+                        "--nologo",
+                        "/v:m",
+                        $"/p:TargetOs={platform.TargetOs}",
+                        "/t:Rebuild",
+                        "/p:FullRelease=true",
+                        "/m",
+                    },
+                };
+
+                if (logBuild)
+                {
+                    startInfo.ArgumentList.Add($"/bl:{Path.Combine("release", $"server-{platform.Rid}.binlog")}");
+                    startInfo.ArgumentList.Add("/p:ReportAnalyzer=true");
                 }
-            };
 
-            if (logBuild)
-            {
-                startInfo.ArgumentList.Add($"/bl:{Path.Combine("release", $"server-{platform.Rid}.binlog")}");
-                startInfo.ArgumentList.Add("/p:ReportAnalyzer=true");
+                await ProcessHelpers.RunCheck(startInfo);
             }
-
-            await ProcessHelpers.RunCheck(startInfo);
 
             await PublishClientServer(platform.Rid, platform.TargetOs, configuration);
         }
