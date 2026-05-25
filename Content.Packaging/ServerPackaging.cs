@@ -120,7 +120,6 @@ public static class ServerPackaging
                         "--nologo",
                         "/v:m",
                         $"/p:TargetOs={platform.TargetOs}",
-                        "/t:Rebuild",
                         "/p:FullRelease=true",
                         "/m",
                     },
