@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name: Test Packaging
 
 on:
@@ -33,7 +37,7 @@ concurrency:
 jobs:
   build:
     name: Test Packaging
-    if: github.actor != 'PJBot' && github.event.pull_request.draft == false
+    if: ${{ github.actor != 'PJBot' && (github.event_name == 'merge_group' || github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
 
     steps:

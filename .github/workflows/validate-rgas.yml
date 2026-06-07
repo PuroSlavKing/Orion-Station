@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 name: RGA schema validator
 on:
   push:
@@ -13,7 +17,7 @@ concurrency:
 jobs:
   yaml-schema-validation:
     name: YAML RGA schema validator
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name == 'push' || github.event_name == 'merge_group' || (github.event_name == 'pull_request' && github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4.2.2
