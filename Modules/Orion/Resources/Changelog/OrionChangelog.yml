@@ -1,7 +1,13 @@
-# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
-#
-# SPDX-License-Identifier: AGPL-3.0-or-later
-
 Name: orion-changelog
 Order: -2
-Entries: []
+Entries:
+- author: PuroSlavKing
+  changes:
+    - type: Add
+      message: Добавлена шестерня отображающая doAfter.
+    - type: Tweak
+      message: >-
+        Изменено отображение doAfter, теперь полоску действия видит только
+        выполняющий взаимодействие, остальные видят шестерни.
+  id: 1
+  time: '2026-06-08T13:01:38.0000000+00:00'
