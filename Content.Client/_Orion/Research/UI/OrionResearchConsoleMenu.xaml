@@ -1,0 +1,37 @@
+<controls:FancyWindow xmlns="https://spacestation14.io"
+                      xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client"
+                      xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls;assembly=Content.Client"
+                      xmlns:orion="clr-namespace:Content.Client._Orion.Research.UI"
+                      Title="{Loc 'research-console-menu-title'}"
+                      SetSize="1260 850">
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" MinHeight="74" Margin="10">
+            <BoxContainer Orientation="Vertical" HorizontalExpand="True">
+                <RichTextLabel Name="ResearchAmountLabel"/>
+                <RichTextLabel Name="ExperimentsLabel"/>
+                <BoxContainer Name="TierDisplayContainer" Orientation="Horizontal" HorizontalExpand="True"/>
+            </BoxContainer>
+            <BoxContainer Orientation="Vertical" HorizontalAlignment="Right">
+                <Button Name="ServerButton" Text="{Loc 'research-console-menu-server-selection-button'}" MinHeight="34"/>
+                <Button Name="JournalButton" Text="{Loc 'research-console-menu-journal-button'}" MinHeight="34" Margin="0 4 0 0"/>
+            </BoxContainer>
+        </BoxContainer>
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" VerticalExpand="True">
+            <PanelContainer SizeFlagsStretchRatio="3" Margin="0 0 8 0" HorizontalExpand="True" VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#000000"/>
+                </PanelContainer.PanelOverride>
+                <orion:OrionResearchGraph Name="ResearchGraph" MouseFilter="Pass"/>
+                <Button Name="RecenterButton" Text="{Loc 'research-console-menu-recenter-button'}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6"/>
+            </PanelContainer>
+            <PanelContainer SizeFlagsStretchRatio="2" MinWidth="430" VerticalExpand="True">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#1B1B1E"/>
+                </PanelContainer.PanelOverride>
+                <ScrollContainer HScrollEnabled="False" HorizontalExpand="True" VerticalExpand="True">
+                    <BoxContainer Name="InfoContainer" Orientation="Vertical" Margin="10" SeparationOverride="6" HorizontalExpand="True"/>
+                </ScrollContainer>
+            </PanelContainer>
+        </BoxContainer>
+    </BoxContainer>
+</controls:FancyWindow>
