@@ -1,3 +1,4 @@
+using Content.Shared._Orion.Research;
 using Robust.Shared.Serialization;
 
 namespace Content.Shared._Orion.Research.Components;
@@ -55,7 +56,9 @@ public sealed class ResearchServerControlEntry
     public List<ResearchPointAmount> Balances;
     public int LogCount;
 
-    public ResearchServerControlEntry(int id, NetEntity serverEntity, string name, string networkId, bool isNetworkAuthority, int networkAuthorityId, bool generationEnabled, int totalPointsPerSecond, List<ResearchPointAmount> pointGeneration, List<ResearchPointAmount> balances, int logCount)
+    public ResearchServerControlEntry(int id, NetEntity serverEntity, string name, string networkId,
+        bool isNetworkAuthority, int networkAuthorityId, bool generationEnabled, int totalPointsPerSecond,
+        List<ResearchPointAmount> pointGeneration, List<ResearchPointAmount> balances, int logCount)
     {
         Id = id;
         ServerEntity = serverEntity;
