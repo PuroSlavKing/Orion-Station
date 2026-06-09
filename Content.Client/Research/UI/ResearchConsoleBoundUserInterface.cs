@@ -1,3 +1,4 @@
+using Content.Client._Orion.Research.UI;
 using Content.Shared.Research.Components;
 using Content.Shared.Research.Prototypes;
 using JetBrains.Annotations;
@@ -10,7 +11,7 @@ namespace Content.Client.Research.UI;
 public sealed class ResearchConsoleBoundUserInterface : BoundUserInterface
 {
     [ViewVariables]
-    private ResearchConsoleMenu? _consoleMenu;
+    private OrionResearchConsoleMenu? _consoleMenu;
 
     public ResearchConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
@@ -19,44 +20,25 @@ public sealed class ResearchConsoleBoundUserInterface : BoundUserInterface
     protected override void Open()
     {
         base.Open();
-
-        var owner = Owner;
-
-        _consoleMenu = this.CreateWindow<ResearchConsoleMenu>();
-        _consoleMenu.SetEntity(owner);
-
-        _consoleMenu.OnTechnologyCardPressed += id =>
-        {
-            SendMessage(new ConsoleUnlockTechnologyMessage(id));
-        };
-
-        _consoleMenu.OnServerButtonPressed += () =>
-        {
-            SendMessage(new ConsoleServerSelectionMessage());
-        };
+        _consoleMenu = this.CreateWindow<OrionResearchConsoleMenu>();
+        _consoleMenu.SetEntity(Owner);
+        _consoleMenu.OnClose += () => _consoleMenu = null;
+        _consoleMenu.TechnologyRequested += id => SendMessage(new ConsoleUnlockTechnologyMessage(id));
+        _consoleMenu.ServerSelectionRequested += () => SendMessage(new ConsoleServerSelectionMessage());
     }
 
     public override void OnProtoReload(PrototypesReloadedEventArgs args)
     {
         base.OnProtoReload(args);
-
-        if (!args.WasModified<TechnologyPrototype>())
+        if (!args.WasModified<TechnologyPrototype>() || State is not ResearchConsoleBoundInterfaceState state)
             return;
-
-        if (State is not ResearchConsoleBoundInterfaceState rState)
-            return;
-
-        _consoleMenu?.UpdatePanels(rState);
-        _consoleMenu?.UpdateInformationPanel(rState);
+        _consoleMenu?.UpdateState(state);
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)
     {
         base.UpdateState(state);
-
-        if (state is not ResearchConsoleBoundInterfaceState castState)
-            return;
-        _consoleMenu?.UpdatePanels(castState);
-        _consoleMenu?.UpdateInformationPanel(castState);
+        if (state is ResearchConsoleBoundInterfaceState researchState)
+            _consoleMenu?.UpdateState(researchState);
     }
 }
