@@ -1,3 +1,5 @@
+using Content.Shared._Orion.Research;
+
 namespace Content.Shared._Orion.Research.Components;
 
 [RegisterComponent]
