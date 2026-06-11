@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 <tabs:MiscTab xmlns="https://spacestation14.io"
               xmlns:tabs="clr-namespace:Content.Client.Options.UI.Tabs"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -5,8 +11,9 @@
     <BoxContainer Orientation="Vertical">
         <ScrollContainer VerticalExpand="True" HorizontalExpand="True">
             <BoxContainer Orientation="Vertical" Margin="8 8 8 8" VerticalExpand="True">
-                <Label Text="{Loc 'ui-options-general-ui-style'}"
+                <Label Name="UiStyleLabel" Text="{Loc 'ui-options-general-ui-style'}"
                        StyleClasses="LabelKeyText"/>
+                <ui:OptionDropDown Name="DropDownLanguage" Title="{Loc 'ui-options-language'}" />
                 <ui:OptionDropDown Name="DropDownHudTheme" Title="{Loc 'ui-options-hud-theme'}" />
                 <ui:OptionDropDown Name="DropDownHudLayout" Title="{Loc 'ui-options-hud-layout'}" />
                 <Label Text="{Loc 'ui-options-general-discord'}"
