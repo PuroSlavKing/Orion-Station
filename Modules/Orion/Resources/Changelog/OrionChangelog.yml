@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 Name: orion-changelog
 Order: -2
 Entries:
@@ -11,6 +15,8 @@ Entries:
         выполняющий взаимодействие, остальные видят шестерни.
   id: 1
   time: '2026-06-08T13:01:38.0000000+00:00'
+  prNumber: 8
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/8
 - author: PuroSlavKing, Rxup
   changes:
     - type: Add
@@ -20,6 +26,8 @@ Entries:
         необходимости.
   id: 2
   time: '2026-06-09T00:21:56.0000000+00:00'
+  prNumber: 10
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/10
 - author: PuroSlavKing
   changes:
     - type: Add
@@ -28,6 +36,8 @@ Entries:
       message: Добавлено 17 голограмм ИИ.
   id: 3
   time: '2026-06-09T15:37:50.0000000+00:00'
+  prNumber: 15
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/15
 - author: PuroSlavKing
   changes:
     - type: Add
@@ -36,12 +46,16 @@ Entries:
       message: Добавлено больше кастомизаций для ящеролюдов.
   id: 4
   time: '2026-06-09T21:50:08.0000000+00:00'
+  prNumber: 16
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/16
 - author: PuroSlavKing
   changes:
     - type: Add
       message: Добавлен выбор языка локализации в настройки.
   id: 5
   time: '2026-06-11T18:51:49.0000000+00:00'
+  prNumber: 17
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/17
 - author: PuroSlavKing
   changes:
     - type: Tweak
@@ -50,3 +64,5 @@ Entries:
         суициде, так же увеличена интенсивность взрыва.
   id: 6
   time: '2026-06-11T19:52:34.0000000+00:00'
+  prNumber: 18
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/18
