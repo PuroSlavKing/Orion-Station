@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2026 PuroSlavKing <puroslavking@yahoo.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Content.Server.Station.Components;
@@ -106,8 +110,9 @@ public abstract partial class GameRuleSystem<T> where T: IComponent
 
         (targetGrid, var gridComp) = RobustRandom.Pick(weights);
 
-        var found = false;
+//        var found = false; // Orion-Edit
         var aabb = gridComp.LocalAABB;
+        var mapUid = Transform(targetGrid).MapUid; // Orion
 
         for (var i = 0; i < 10; i++)
         {
@@ -115,18 +120,42 @@ public abstract partial class GameRuleSystem<T> where T: IComponent
             var randomY = RobustRandom.Next((int) aabb.Bottom, (int) aabb.Top);
 
             tile = new Vector2i(randomX, randomY);
-            if (_atmosphere.IsTileSpace(targetGrid, Transform(targetGrid).MapUid, tile)
+            if (_atmosphere.IsTileSpace(targetGrid, mapUid, tile) // Orion-Edit
                 || _atmosphere.IsTileAirBlockedCached(targetGrid, tile))
             {
                 continue;
             }
 
-            found = true;
+//            found = true; // Orion-Edit
             targetCoords = _map.GridTileToLocal(targetGrid, gridComp, tile);
-            break;
+            return true; // Orion-Edit
         }
 
-        return found;
+//        return found; // Orion-Edit
+
+        // Orion-Start
+        // Sparse grids can miss every valid tile when sampling their bounding box, so fall back to a random valid tile.
+        var validTiles = 0;
+        foreach (var tileRef in _map.GetAllTiles(targetGrid, gridComp))
+        {
+            var candidate = tileRef.GridIndices;
+            if (_atmosphere.IsTileSpace(targetGrid, mapUid, candidate)
+                || _atmosphere.IsTileAirBlockedCached(targetGrid, candidate))
+            {
+                continue;
+            }
+
+            validTiles++;
+            if (RobustRandom.Next(validTiles) == 0)
+                tile = candidate;
+        }
+
+        if (validTiles == 0)
+            return false;
+
+        targetCoords = _map.GridTileToLocal(targetGrid, gridComp, tile);
+        return true;
+        // Orion-End
     }
 
     protected void ForceEndSelf(EntityUid uid, GameRuleComponent? component = null)
