@@ -80,3 +80,11 @@ Entries:
   time: '2026-06-12T20:51:12.0000000+00:00'
   prNumber: 24
   prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/24
+- author: PuroSlavKing
+  changes:
+    - type: Add
+      message: Добавлен индикатор боевого режима.
+  id: 9
+  time: '2026-06-13T19:13:02.0000000+00:00'
+  prNumber: 25
+  prUrl: https://github.com/AtaraxiaSpaceFoundation/Orion-Station/pull/25
