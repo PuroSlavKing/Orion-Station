@@ -61,7 +61,7 @@ public sealed partial class EnergyDomeSystem : EntitySystem
 
         SubscribeLocalEvent<EnergyDomeGeneratorComponent, ComponentRemove>(OnComponentRemove);
 
-        SubscribeLocalEvent<EnergyDomeComponent, DamageChangedEvent>(OnDomeDamaged);
+        SubscribeLocalEvent<EnergyDomeComponent, DamageDealtEvent>(OnDomeDamaged);
     }
 
     private void OnInit(Entity<EnergyDomeGeneratorComponent> generator, ref MapInitEvent args)
@@ -158,19 +158,16 @@ public sealed partial class EnergyDomeSystem : EntitySystem
             TurnOff(generator, true);
     }
 
-    private void OnDomeDamaged(Entity<EnergyDomeComponent> dome, ref DamageChangedEvent args)
+    private void OnDomeDamaged(Entity<EnergyDomeComponent> dome, ref DamageDealtEvent args)
     {
         if (dome.Comp.Generator == null)
-            return;
-
-        if (args.DamageDelta == null)
             return;
 
         var generatorUid = dome.Comp.Generator.Value;
         if (!TryComp<EnergyDomeGeneratorComponent>(generatorUid, out var generatorComp))
             return;
 
-        var totalDamage = args.DamageDelta.GetTotal().Float();
+        var totalDamage = args.Damage.GetTotal().Float();
         var energyLeak = totalDamage * generatorComp.DamageEnergyDraw;
 
         _audio.PlayPvs(generatorComp.ParrySound, dome);

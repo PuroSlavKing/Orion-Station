@@ -76,6 +76,8 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
 
     [Dependency] private EntityQuery<DamageableComponent> _damageQuery = default!;
 
+    private static readonly ProtoId<TagPrototype> MeleeHitIgnoreTag = "MeleeHitIgnore"; // Orion
+
     private const int AttackMask = (int) (CollisionGroup.MobMask | CollisionGroup.Opaque);
 
     /// <summary>
@@ -610,7 +612,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         var resistanceBypass = GetResistanceBypass(meleeUid, user, component);
         var entities = GetEntityList(ev.Entities);
 
-        entities = entities.Where(e => !_tag.HasTag(e, "MeleeHitIgnore")).ToList(); // Orion
+        entities = entities.Where(e => !_tag.HasTag(e, MeleeHitIgnoreTag)).ToList(); // Orion
 
         if (entities.Count == 0)
         {
@@ -674,7 +676,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
                 continue;
 
             // Orion-Start
-            if (_tag.HasTag(entity, "MeleeHitIgnore"))
+            if (_tag.HasTag(entity, MeleeHitIgnoreTag))
                 continue;
             // Orion-End
 
@@ -786,7 +788,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
                 range,
                 ignore,
                 false)
-                .Where(x => !_tag.HasAnyTag(x.HitEntity, "MeleeHitIgnore")) // Orion
+                .Where(x => !_tag.HasTag(x.HitEntity, MeleeHitIgnoreTag)) // Orion
                 .ToList();
 
             if (res.Count != 0)
