@@ -786,7 +786,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
                 range,
                 ignore,
                 false)
-                .Where(x => !_tag.HasAnyTag(x.HitEntity, "MeleeHitIgnore")) // Orion-Edit: HasAnyTag, MeleeHitIgnore
+                .Where(x => !_tag.HasAnyTag(x.HitEntity, "MeleeHitIgnore")) // Orion
                 .ToList();
 
             if (res.Count != 0)
