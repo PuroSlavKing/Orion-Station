@@ -65,6 +65,9 @@
 - type: latheRecipePack
   id: SecurityEquipment
   recipes:
+  # Orion-Start
+  - EnergyDomeTurtle
+  # Orion-End
   - ClothingBackpackElectropack
   - HoloprojectorSecurity
   - PortableRecharger
