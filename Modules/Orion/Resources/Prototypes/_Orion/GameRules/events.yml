@@ -1,0 +1,11 @@
+- type: entity
+  parent: BaseGameRule
+  id: Payday
+  components:
+  - type: PaydayRule
+
+- type: entity
+  parent: BaseGameRule
+  id: MarketShift
+  components:
+  - type: MarketShiftRule

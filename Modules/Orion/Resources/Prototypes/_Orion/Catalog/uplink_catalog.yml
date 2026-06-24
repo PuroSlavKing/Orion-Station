@@ -17,3 +17,20 @@
       whitelist:
         tags:
           - NukeOpsUplink
+
+- type: listing
+  id: UplinkProtocolCrab17Phone
+  name: protocol-crab17-phone-name
+  description: protocol-crab17-phone-desc
+  productEntity: SuspiciousPhone
+  cost:
+    Telecrystal: 7
+  categories:
+  - UplinkDisruption
+  conditions:
+  - !type:StoreWhitelistCondition
+    blacklist:
+      tags:
+      - ContravendUplink
+  - !type:ListingLimitedStockCondition
+    stock: 1
